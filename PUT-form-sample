@@ -1,0 +1,110 @@
+<html>
+
+<body>
+
+  <div class="container" id="productapp">
+
+    <div class="row">
+      <h1>Edit Product</h1>
+    </div>
+
+    <div>
+
+      <div class="row">
+        <div class="form-group col-lg-6">
+          <label>Product Name</label>
+          <input class="form-control" v-model="product.name">
+        </div>
+        <div class="form-group col-lg-6">
+          <label>URL Title</label>
+          <input class="form-control" v-model="product.url_name">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-lg-6">
+          <label>SKU</label>
+          <input class="form-control" v-model="product.sku">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-lg-12">
+          <label>Short Description</label>
+          <textarea class="form-control" v-model="product.short_description"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-lg-12">
+          <label>Description</label>
+          <textarea class="form-control" v-model="product.description"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-lg-3 col-md-6 col-sm-6">
+          <label>Enabled</label>
+          <input class="form-control" v-model="product.enabled">
+        </div>
+        <div class="form-group col-lg-3 col-md-6 col-sm-6">
+          <label>Track Inventory</label>
+          <input class="form-control" v-model="product.track_inventory">
+        </div>
+        <div class="form-group col-lg-3 col-md-6 col-sm-6">
+          <label>Stock Level</label>
+          <input class="form-control" v-model="product.stock_level">
+        </div>
+        <div class="form-group col-lg-3 col-md-6 col-sm-6">
+          <label>Allow Backorder</label>
+          <input class="form-control" v-model="product.allow_backorder">
+        </div>
+      </div>
+      
+
+      <button class="btn btn-primary" @click="updateProduct">Update Product</button>
+
+
+      <pre>{{ product | json }}</pre>
+
+    </div>
+
+  </div>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.16/vue.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.1.16/vue-resource.min.js"></script>  <script>
+    new Vue({
+    				  el: '#productapp',
+    						  
+    				  ready: function() {
+    				    this.fetchProduct();
+    				  },
+    				  
+    				  methods: {
+    				    
+    				    fetchProduct: function() {
+    				      this.$http.get('api/v1/product/1', function(data, status, request) {
+    				        this.$set('product', data.Product)
+    				      });  
+    				    },
+    				    
+    				    updateProduct: function () {	
+						//let's confirm that this.product is filled here b4 putting
+						//console.log(this.product);
+    				       this.$http.put('api/v1/product/1', this.product)
+    				        .success(function (res) {
+    				            alert('Product updated');
+    				            console.log(this.product);
+    				          })
+    				          .error(function (err) {
+    				           alert('Product updated failed');
+    				          }
+    				          );
+    				    }		    
+    				    
+    				    
+    				  }
+    				})
+  </script>
+</body>
+
+</html>
